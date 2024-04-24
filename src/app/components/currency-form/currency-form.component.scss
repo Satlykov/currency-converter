@@ -1,0 +1,19 @@
+.inputs-container {
+  width: 320px;
+
+  tui-select {
+    max-width: 150px;
+  }
+}
+
+.card-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100px;
+
+  img {
+    height: 20px;
+  }
+}
