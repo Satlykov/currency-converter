@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <div tuiGroup class="group inputs-container">
+    <tui-input-number
+      formControlName="money"
+      class="tui-group__inherit-item"
+      [tuiTextfieldPostfix]="form.value.currency!.currency | tuiCurrency"
+      >Type a sum</tui-input-number
+    >
+
+    <tui-select formControlName="currency" [valueContent]="cardContent"
+      >Choose a country
+      <tui-data-list-wrapper *tuiDataList [itemContent]="cardContent" [items]="countries"></tui-data-list-wrapper>
+    </tui-select>
+  </div>
+
+  <ng-template #cardContent let-item>
+    <div class="card-item">
+      <img [alt]="item.name" [src]="item.flag | tuiFlag" />
+      <span>{{ item.currency }}</span>
+    </div>
+  </ng-template>
+</form>
