@@ -1,2 +1,6 @@
-<tui-root></tui-root>
-<app-currency-form></app-currency-form>
+<tui-loader [showLoader]="showLoader" [overlay]="true">
+  <tui-root></tui-root>
+  <div class="app-wrapper">
+    <app-currency-form (showLoader)="onShowLoader($event)"></app-currency-form>
+  </div>
+</tui-loader>
