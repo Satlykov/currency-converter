@@ -5,17 +5,19 @@
       class="tui-group__inherit-item"
       [tuiTextfieldPostfix]="form.get(CurrencyFormProp.CurrencyFirstInput)!.value!.currency | tuiCurrency"
       [precision]="Infinity"
-      >Введите сумму</tui-input-number
     >
+      Введите сумму
+    </tui-input-number>
 
-    <tui-select formControlName="currencyFirstInput" [valueContent]="cardContent"
-      >Валюта
+    <tui-select formControlName="currencyFirstInput" [valueContent]="cardContent">
+      Валюта
       <tui-data-list-wrapper
         *tuiDataList
         [itemContent]="cardContent"
         [items]="countries"
         [disabledItemHandler]="disabledItemHandlerFirstInput"
-      ></tui-data-list-wrapper>
+      >
+      </tui-data-list-wrapper>
     </tui-select>
   </div>
 
@@ -27,11 +29,12 @@
       class="tui-group__inherit-item"
       [tuiTextfieldPostfix]="form.get(CurrencyFormProp.CurrencySecondInput)!.value!.currency | tuiCurrency"
       [precision]="Infinity"
-      >Введите сумму</tui-input-number
     >
+      Введите сумму
+    </tui-input-number>
 
-    <tui-select formControlName="currencySecondInput" [valueContent]="cardContent"
-      >Валюта
+    <tui-select formControlName="currencySecondInput" [valueContent]="cardContent">
+      Валюта
       <tui-data-list-wrapper
         *tuiDataList
         [itemContent]="cardContent"
@@ -41,10 +44,13 @@
     </tui-select>
   </div>
 </form>
-<span
-  >1 {{ rateForOne[form.get(CurrencyFormProp.CurrencyFirstInput)!.value!.currency] }} = {{ rate | tuiFormatNumber }}
-  {{ rateForSome[form.get(CurrencyFormProp.CurrencySecondInput)!.value!.currency] }}</span
->
+
+<span>
+  1 {{ rateForOne[form.get(CurrencyFormProp.CurrencyFirstInput)!.value!.currency] }} =
+  {{ rate | tuiFormatNumber }}
+  {{ rateForSome[form.get(CurrencyFormProp.CurrencySecondInput)!.value!.currency] }}
+</span>
+
 <ng-template #cardContent let-item>
   <div class="card-item">
     <img [alt]="item.name" [src]="item.flag | tuiFlag" />
