@@ -1,22 +1,50 @@
 <form [formGroup]="form">
   <div tuiGroup class="group inputs-container">
     <tui-input-number
-      formControlName="money"
+      formControlName="moneyFirstInput"
       class="tui-group__inherit-item"
-      [tuiTextfieldPostfix]="form.value.currency!.currency | tuiCurrency"
+      [tuiTextfieldPostfix]="form.get(CurrencyFormProp.CurrencyFirstInput)!.value!.currency | tuiCurrency"
+      [precision]="Infinity"
       >Type a sum</tui-input-number
     >
 
-    <tui-select formControlName="currency" [valueContent]="cardContent"
+    <tui-select formControlName="currencyFirstInput" [valueContent]="cardContent"
       >Choose a country
-      <tui-data-list-wrapper *tuiDataList [itemContent]="cardContent" [items]="countries"></tui-data-list-wrapper>
+      <tui-data-list-wrapper
+        *tuiDataList
+        [itemContent]="cardContent"
+        [items]="countries"
+        [disabledItemHandler]="disabledItemHandlerFirstInput"
+      ></tui-data-list-wrapper>
     </tui-select>
   </div>
 
-  <ng-template #cardContent let-item>
-    <div class="card-item">
-      <img [alt]="item.name" [src]="item.flag | tuiFlag" />
-      <span>{{ item.currency }}</span>
-    </div>
-  </ng-template>
+  <button appearance="icon" icon="tuiIconRepeatLarge" tuiIconButton type="button" (click)="onSwapCurrency()"></button>
+
+  <div tuiGroup class="group inputs-container">
+    <tui-input-number
+      formControlName="moneySecondInput"
+      class="tui-group__inherit-item"
+      [tuiTextfieldPostfix]="form.get(CurrencyFormProp.CurrencySecondInput)!.value!.currency | tuiCurrency"
+      [precision]="Infinity"
+      >Type a sum</tui-input-number
+    >
+
+    <tui-select formControlName="currencySecondInput" [valueContent]="cardContent"
+      >Choose a country
+      <tui-data-list-wrapper
+        *tuiDataList
+        [itemContent]="cardContent"
+        [items]="countries"
+        [disabledItemHandler]="disabledItemHandlerSecondInput"
+      ></tui-data-list-wrapper>
+    </tui-select>
+  </div>
 </form>
+
+<ng-template #cardContent let-item>
+  <div class="card-item">
+    <img [alt]="item.name" [src]="item.flag | tuiFlag" />
+    <span>{{ item.currency }}</span>
+  </div>
+</ng-template>
