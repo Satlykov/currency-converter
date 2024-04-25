@@ -1,15 +1,15 @@
-<form [formGroup]="form">
+<form [formGroup]="form" class="tui-space_bottom-3">
   <div tuiGroup class="group inputs-container">
     <tui-input-number
       formControlName="moneyFirstInput"
       class="tui-group__inherit-item"
       [tuiTextfieldPostfix]="form.get(CurrencyFormProp.CurrencyFirstInput)!.value!.currency | tuiCurrency"
       [precision]="Infinity"
-      >Type a sum</tui-input-number
+      >Введите сумму</tui-input-number
     >
 
     <tui-select formControlName="currencyFirstInput" [valueContent]="cardContent"
-      >Choose a country
+      >Валюта
       <tui-data-list-wrapper
         *tuiDataList
         [itemContent]="cardContent"
@@ -27,11 +27,11 @@
       class="tui-group__inherit-item"
       [tuiTextfieldPostfix]="form.get(CurrencyFormProp.CurrencySecondInput)!.value!.currency | tuiCurrency"
       [precision]="Infinity"
-      >Type a sum</tui-input-number
+      >Введите сумму</tui-input-number
     >
 
     <tui-select formControlName="currencySecondInput" [valueContent]="cardContent"
-      >Choose a country
+      >Валюта
       <tui-data-list-wrapper
         *tuiDataList
         [itemContent]="cardContent"
@@ -41,7 +41,10 @@
     </tui-select>
   </div>
 </form>
-
+<span
+  >1 {{ rateForOne[form.get(CurrencyFormProp.CurrencyFirstInput)!.value!.currency] }} = {{ rate | tuiFormatNumber }}
+  {{ rateForSome[form.get(CurrencyFormProp.CurrencySecondInput)!.value!.currency] }}</span
+>
 <ng-template #cardContent let-item>
   <div class="card-item">
     <img [alt]="item.name" [src]="item.flag | tuiFlag" />

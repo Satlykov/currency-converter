@@ -1,10 +1,16 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { TuiButtonModule, TuiFlagPipeModule, TuiGroupModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
+import {
+  TuiButtonModule,
+  TuiFlagPipeModule,
+  TuiFormatNumberPipeModule,
+  TuiGroupModule,
+  TuiTextfieldControllerModule,
+} from '@taiga-ui/core';
 import { TuiDataListWrapperModule, TuiInputNumberModule, TuiSelectModule } from '@taiga-ui/kit';
 import { TuiCurrencyPipeModule } from '@taiga-ui/addon-commerce';
 import { TuiCountryIsoCode } from '@taiga-ui/i18n';
-import { CurrencyFormProp } from '../../const/currency-form-prop';
+import { CurrencyFormProp, rateForOne, rateForSome } from '../../const/currency';
 import { CurrencyApiService } from '../../services/currency-api.service';
 import { debounceTime, finalize, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -24,6 +30,7 @@ import { TuiBooleanHandler } from '@taiga-ui/cdk';
     TuiDataListWrapperModule,
     TuiFlagPipeModule,
     TuiButtonModule,
+    TuiFormatNumberPipeModule,
   ],
   templateUrl: './currency-form.component.html',
   styleUrl: './currency-form.component.scss',
@@ -32,10 +39,12 @@ import { TuiBooleanHandler } from '@taiga-ui/cdk';
 })
 export class CurrencyFormComponent implements OnInit {
   public destroyRef = inject(DestroyRef);
-  @Output() showLoader = new EventEmitter<boolean>();
-
   public readonly CurrencyFormProp = CurrencyFormProp;
   public readonly Infinity = Infinity;
+  public readonly rateForOne = rateForOne;
+  public readonly rateForSome = rateForSome;
+
+  @Output() showLoader = new EventEmitter<boolean>();
 
   public countries = [
     new Country('USA', 'USD', TuiCountryIsoCode.US),
@@ -44,6 +53,8 @@ export class CurrencyFormComponent implements OnInit {
     new Country('Russia', 'RUB', TuiCountryIsoCode.RU),
     new Country('Kazakhstan', 'KZT', TuiCountryIsoCode.KZ),
   ];
+
+  public rate: number = 1;
 
   private defaultFirstCountry = this.countries[0];
   private defaultSecondCountry = this.countries[2];
@@ -141,7 +152,8 @@ export class CurrencyFormComponent implements OnInit {
     this.api
       .convertFromTo(fromCurrency, toCurrency, amount)
       .pipe(
-        tap(({ convertedAmount }) => {
+        tap(({ convertedAmount, rate }) => {
+          this.rate = this.rounding(rate);
           moneyInput!.patchValue(this.rounding(convertedAmount), { emitEvent: false });
         }),
         finalize(() => this.showLoader.emit(false)),
